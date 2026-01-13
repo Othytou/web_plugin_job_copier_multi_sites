@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Job Copier</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="header">
+			<h1>📋 Job Copier</h1>
+			<p class="tagline">Copiez vos offres en un clic</p>
+		</div>
+
+		<div class="shortcut-info">
+			<div class="shortcut-badge">
+				<span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">M</span>
+			</div>
+			<p class="shortcut-text">Raccourci pour copier</p>
+		</div>
+
+		<div class="sites-section">
+			<h2>Sites supportés</h2>
+			<div class="sites-list">
+				<div class="site-item configured">
+					<span class="site-icon">✅</span>
+					<span class="site-name">Indeed</span>
+					<span class="site-status">Configuré</span>
+				</div>
+				<div class="site-item pending">
+					<span class="site-icon">⏳</span>
+					<span class="site-name">LinkedIn</span>
+					<span class="site-status">À configurer</span>
+				</div>
+				<div class="site-item pending">
+					<span class="site-icon">⏳</span>
+					<span class="site-name">Welcome to the Jungle</span>
+					<span class="site-status">À configurer</span>
+				</div>
+				<div class="site-item pending">
+					<span class="site-icon">⏳</span>
+					<span class="site-name">HelloWork</span>
+					<span class="site-status">À configurer</span>
+				</div>
+				<div class="site-item pending">
+					<span class="site-icon">⏳</span>
+					<span class="site-name">Free-Work</span>
+					<span class="site-status">À configurer</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="stats-section">
+			<h2>Statistiques</h2>
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-number" id="total-copies">0</div>
+					<div class="stat-label">Offres copiées</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number" id="today-copies">0</div>
+					<div class="stat-label">Aujourd'hui</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="actions">
+			<button id="clear-stats" class="btn-secondary">Réinitialiser stats</button>
+		</div>
+
+		<div class="footer">
+			<p>Version 1.0 • <a href="https://github.com" target="_blank">GitHub</a></p>
+		</div>
+	</div>
+
+	<script src="popup.js"></script>
+</body>
+
+</html>

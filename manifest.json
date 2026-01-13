@@ -1,34 +1,54 @@
 {
 	"manifest_version": 3,
-	"name": "Block Insta Content",
+	"name": "Job Copier Multi-Sites",
 	"version": "1.0.1",
-	"description": "Block access to message in Instagram Web, Next update is to block content",
-	"icons": {
-		"16": "icons/icon16.png",
-		"48": "icons/icon48.png",
-		"128": "icons/icon128.png"
-	},
-	"action": {
-		"default_popup": "popup.html",
-		"default_icon": {
-			"16": "icons/icon16.png",
-			"48": "icons/icon48.png",
-			"128": "icons/icon128.png"
-		}
-	},
+	"description": "Copie rapidement le contenu des offres d'emploi depuis Indeed, LinkedIn, Welcome to the Jungle, HelloWork et Free-Work",
 	"permissions": [
 		"storage",
-		"activeTab"
+		"activeTab",
+		"clipboardWrite",
+		"scripting"
 	],
+	"host_permissions": [
+		"*://*.indeed.com/*",
+		"*://*.linkedin.com/*",
+		"*://*.welcometothejungle.com/*",
+		"*://*.hellowork.com/*",
+		"*://*.free-work.com/*"
+	],
+	"commands": {
+		"copy-job": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+M"
+			},
+			"description": "Copier le contenu de l'offre d'emploi"
+		}
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
 	"content_scripts": [
 		{
 			"matches": [
-				"*://www.instagram.com/*"
+				"*://*.indeed.com/*",
+				"*://*.linkedin.com/*",
+				"*://*.welcometothejungle.com/*",
+				"*://*.hellowork.com/*",
+				"*://*.free-work.com/*"
 			],
 			"js": [
 				"content.js"
 			],
-			"run_at": "document_start"
+			"run_at": "document_idle"
 		}
-	]
+	],
+	"action": {
+		"default_title": "Job Copier Multi-Sites",
+		"default_popup": "popup.html"
+	},
+	"icons": {
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
+	}
 }

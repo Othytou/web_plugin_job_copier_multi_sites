@@ -1,95 +1,134 @@
-// content.js - Bloquer la page des messages Instagram
+// content.js
+// Script qui s'exécute sur les sites d'offres d'emploi
 
-// Fonction pour bloquer la page
-function blockPage() {
-	if (window.location.href.includes('instagram.com/direct/inbox') ||
-		window.location.href.includes('instagram.com/direct/t/')) {
+// Configuration
+const config = {
+	siteSelectors: {
+		'Indeed': '.jobsearch-JobComponent-description',
+		'LinkedIn': '', // À compléter
+		'Welcome to the Jungle': '', // À compléter
+		'HelloWork': '', // À compléter
+		'Free-Work': '' // À compléter
+	},
 
-		console.log('🚫 Tentative de blocage de la page Instagram Messages');
+	scrappUrls: [
+		'indeed.com',
+		'linkedin.com',
+		'welcometothejungle.com',
+		'hellowork.com',
+		'free-work.com'
+	]
+};
 
-		// Créer une page de blocage
-		document.documentElement.innerHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Page bloquée</title>
-      </head>
-      <body style="margin: 0; padding: 0;">
-        <div style="
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          margin: 0;
-          color: white;
-        ">
-          <div style="
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 60px 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-          ">
-            <div style="font-size: 80px; margin-bottom: 20px;">🚫</div>
-            <h1 style="
-              font-size: 32px;
-              margin: 0 0 15px 0;
-              font-weight: 600;
-            ">Page bloquée</h1>
-            <p style="
-              font-size: 18px;
-              margin: 0 0 30px 0;
-              opacity: 0.9;
-              line-height: 1.5;
-            ">
-              Les messages Instagram sont temporairement bloqués.<br>
-              Concentre-toi sur tes tâches importantes !
-            </p>
-            <div style="
-              background: rgba(255, 255, 255, 0.2);
-              padding: 15px;
-              border-radius: 10px;
-              font-size: 14px;
-              opacity: 0.8;
-            ">
-              💡 Astuce : Désactive l'extension si tu as vraiment besoin d'accéder aux messages
-            </div>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-
-		console.log('✅ Instagram Messages bloqués par l\'extension');
-		return true;
-	}
-	return false;
+// Vérifie si on est sur un site supporté
+function isOnSupportedSite() {
+	return config.scrappUrls.some(url => window.location.href.includes(url));
 }
 
-// Bloquer au chargement initial
-blockPage();
+// Détecte le site actuel
+function detectCurrentSite() {
+	const url = window.location.href;
 
-// Surveiller les changements d'URL (pour les SPA comme Instagram)
-let lastUrl = location.href;
-new MutationObserver(() => {
-	const url = location.href;
-	if (url !== lastUrl) {
-		lastUrl = url;
-		console.log('🔄 URL changée:', url);
-		blockPage();
-	}
-}).observe(document, { subtree: true, childList: true });
+	if (url.includes('indeed.com')) return 'Indeed';
+	if (url.includes('linkedin.com')) return 'LinkedIn';
+	if (url.includes('welcometothejungle.com')) return 'Welcome to the Jungle';
+	if (url.includes('hellowork.com')) return 'HelloWork';
+	if (url.includes('free-work.com')) return 'Free-Work';
 
-// Vérifier périodiquement (au cas où)
-setInterval(() => {
-	if (window.location.href.includes('instagram.com/direct/inbox') ||
-		window.location.href.includes('instagram.com/direct/t/')) {
-		blockPage();
+	return null;
+}
+
+// Récupère le sélecteur pour le site actuel
+function getCurrentSelector() {
+	const siteName = detectCurrentSite();
+	return siteName ? config.siteSelectors[siteName] : null;
+}
+
+// Ajoute un bouton de copie dans la page
+function addCopyButton() {
+	if (!isOnSupportedSite()) return;
+
+	const selector = getCurrentSelector();
+	if (!selector) return;
+
+	const contentElement = document.querySelector(selector);
+
+	if (contentElement && !document.getElementById('job-copy-btn')) {
+		const btn = document.createElement('button');
+		btn.id = 'job-copy-btn';
+		btn.innerHTML = '📋 Copier l\'offre';
+		btn.style.cssText = `
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			z-index: 9999;
+			padding: 12px 24px;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			font-weight: 600;
+			box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+			transition: all 0.3s ease;
+		`;
+
+		btn.addEventListener('mouseenter', () => {
+			btn.style.transform = 'translateY(-2px)';
+			btn.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.6)';
+		});
+
+		btn.addEventListener('mouseleave', () => {
+			btn.style.transform = 'translateY(0)';
+			btn.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+		});
+
+		btn.addEventListener('click', () => {
+			const el = document.querySelector(selector);
+			if (el) {
+				navigator.clipboard.writeText(el.innerText.trim());
+				btn.innerHTML = '✓ Copié !';
+				btn.style.background = '#28a745';
+
+				setTimeout(() => {
+					btn.innerHTML = '📋 Copier l\'offre';
+					btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+				}, 2000);
+			}
+		});
+
+		document.body.appendChild(btn);
 	}
-}, 500);
+}
+
+// Observer pour les sites en SPA (Single Page Application)
+function observePageChanges() {
+	if (!isOnSupportedSite()) return;
+
+	const observer = new MutationObserver(() => {
+		addCopyButton();
+	});
+
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true
+	});
+}
+
+// Initialisation
+console.log(`Job Copier chargé sur ${detectCurrentSite() || 'site non supporté'}`);
+
+if (isOnSupportedSite()) {
+	// Attendre que le DOM soit complètement chargé
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', () => {
+			addCopyButton();
+			observePageChanges();
+		});
+	} else {
+		addCopyButton();
+		observePageChanges();
+	}
+}
