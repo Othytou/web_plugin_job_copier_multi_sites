@@ -1,4 +1,3 @@
-// content.js
 // Script qui s'exécute sur les sites d'offres d'emploi
 
 // Configuration
@@ -88,7 +87,16 @@ function addCopyButton() {
 		btn.addEventListener('click', () => {
 			const el = document.querySelector(selector);
 			if (el) {
-				navigator.clipboard.writeText(el.innerText.trim());
+				const jobContent = el.innerText;
+				const currentUrl = window.location.href;
+
+				// Formate le texte avec le lien à la fin
+				const textToCopy = `${jobContent}
+
+___
+${currentUrl}`;
+
+				navigator.clipboard.writeText(textToCopy);
 				btn.innerHTML = '✓ Copié !';
 				btn.style.background = '#28a745';
 

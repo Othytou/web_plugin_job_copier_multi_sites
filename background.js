@@ -64,8 +64,16 @@ function copyJobContent() {
 	const element = document.querySelector(selector);
 
 	if (element) {
-		const text = element.innerText;
-		navigator.clipboard.writeText(text.trim()).then(() => {
+		const jobContent = element.innerText;
+		const currentUrl = window.location.href;
+
+		// Formate le texte avec le lien à la fin
+		const textToCopy = `${jobContent}
+
+___
+${currentUrl}`;
+
+		navigator.clipboard.writeText(textToCopy).then(() => {
 			console.log(`Contenu copié avec succès depuis ${siteName}`);
 
 			// Notification visuelle optionnelle
