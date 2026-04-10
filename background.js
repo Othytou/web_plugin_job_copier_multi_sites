@@ -1,3 +1,5 @@
+//background.js
+
 // Gestion des commandes clavier pour copier les offres d'emploi
 
 chrome.commands.onCommand.addListener((command) => {
@@ -17,8 +19,10 @@ chrome.commands.onCommand.addListener((command) => {
 function copyJobContent() {
 	// Configuration des sélecteurs par site
 	const siteSelectors = {
-		'Indeed': '.jobsearch-JobComponent-description',
-		'LinkedIn': '', // À compléter
+		'Indeed': {
+			header: '.jobsearch-InfoHeaderContainer',
+			description: '.jobsearch-JobComponent-description'
+		}, 'LinkedIn': '', // À compléter
 		'Welcome to the Jungle': '', // À compléter
 		'HelloWork': '', // À compléter
 		'Free-Work': '' // À compléter
@@ -36,54 +40,55 @@ function copyJobContent() {
 	// Détecte le site actuel
 	function detectCurrentSite() {
 		const currentUrl = window.location.href;
-
 		for (const site of supportedSites) {
-			if (currentUrl.includes(site.url)) {
-				return site.name;
-			}
+			if (currentUrl.includes(site.url)) return site.name;
 		}
 		return null;
 	}
 
+
 	// Récupère le sélecteur approprié
 	const siteName = detectCurrentSite();
+	if (!siteName) return;
 
-	if (!siteName) {
-		console.warn('Site non supporté pour la copie d\'offre');
-		return;
+
+	const selectors = siteSelectors[siteName];
+	if (!selectors || !selectors.description) return;
+
+	const header = selectors.header ? document.querySelector(selectors.header) : null;
+	const description = document.querySelector(selectors.description);
+	if (!description) return;
+
+	let company = '';
+	let position = '';
+
+	if (header) {
+		const titleEl = header.querySelector('[data-testid="jobsearch-JobInfoHeader-title"]')
+			|| header.querySelector('h1');
+		const companyEl = header.querySelector('[data-testid="inlineHeader-companyName"]')
+			|| header.querySelector('[data-testid="jobsearch-JobInfoHeader-companyName"]');
+
+		if (titleEl) position = titleEl.innerText.trim();
+		if (companyEl) company = companyEl.innerText.trim();
 	}
 
-	const selector = siteSelectors[siteName];
+	const payload = {
+		job_offer: description.innerText.trim(),
+		company: company,
+		position: position,
+		url: window.location.href
+	};
 
-	if (!selector) {
-		console.warn(`Sélecteur non configuré pour ${siteName}`);
-		return;
-	}
+	navigator.clipboard.writeText(JSON.stringify(payload, null, 2)).then(() => {
+		showCopyNotification(siteName);
+	});
 
-	// Récupère et copie le contenu
-	const element = document.querySelector(selector);
+	fetch('http://localhost:8000/webhook', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(payload)
+	}).catch(err => console.error('[CV Agent] Webhook error:', err));
 
-	if (element) {
-		const jobContent = element.innerText;
-		const currentUrl = window.location.href;
-
-		// Formate le texte avec le lien à la fin
-		const textToCopy = `${jobContent}
-
-___
-${currentUrl}`;
-
-		navigator.clipboard.writeText(textToCopy).then(() => {
-			console.log(`Contenu copié avec succès depuis ${siteName}`);
-
-			// Notification visuelle optionnelle
-			showCopyNotification(siteName);
-		}).catch(err => {
-			console.error('Erreur lors de la copie:', err);
-		});
-	} else {
-		console.warn(`Élément non trouvé avec le sélecteur: ${selector}`);
-	}
 
 	// Affiche une notification temporaire
 	function showCopyNotification(site) {

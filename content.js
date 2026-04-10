@@ -1,10 +1,13 @@
+//content.js
 // Script qui s'exécute sur les sites d'offres d'emploi
 
 // Configuration
 const config = {
 	siteSelectors: {
-		'Indeed': '.jobsearch-JobComponent-description',
-		'LinkedIn': '', // À compléter
+		'Indeed': {
+			header: '.jobsearch-InfoHeaderContainer',
+			description: '.jobsearch-JobComponent-description'
+		}, 'LinkedIn': '', // À compléter
 		'Welcome to the Jungle': '', // À compléter
 		'HelloWork': '', // À compléter
 		'Free-Work': '' // À compléter
@@ -38,21 +41,23 @@ function detectCurrentSite() {
 }
 
 // Récupère le sélecteur pour le site actuel
-function getCurrentSelector() {
+function getCurrentSelectors() {
 	const siteName = detectCurrentSite();
-	return siteName ? config.siteSelectors[siteName] : null;
+	return siteName ? siteSelectors[siteName] : null;
 }
+
 
 // Ajoute un bouton de copie dans la page
 function addCopyButton() {
 	if (!isOnSupportedSite()) return;
 
-	const selector = getCurrentSelector();
-	if (!selector) return;
+	const selectors = getCurrentSelectors();
+	if (!selectors || !selectors.description) return;
 
-	const contentElement = document.querySelector(selector);
+	const contentElement = document.querySelector(selectors.description);
 
 	if (contentElement && !document.getElementById('job-copy-btn')) {
+
 		const btn = document.createElement('button');
 		btn.id = 'job-copy-btn';
 		btn.innerHTML = '📋 Copier l\'offre';
@@ -85,26 +90,48 @@ function addCopyButton() {
 		});
 
 		btn.addEventListener('click', () => {
-			const el = document.querySelector(selector);
-			if (el) {
-				const jobContent = el.innerText;
-				const currentUrl = window.location.href;
+			const header = selectors.header ? document.querySelector(selectors.header) : null;
+			const description = document.querySelector(selectors.description);
 
-				// Formate le texte avec le lien à la fin
-				const textToCopy = `${jobContent}
+			if (!description) return;
 
-___
-${currentUrl}`;
+			// Extraction company + position depuis le header Indeed
+			let company = '';
+			let position = '';
 
-				navigator.clipboard.writeText(textToCopy);
-				btn.innerHTML = '✓ Copié !';
-				btn.style.background = '#28a745';
+			if (header) {
+				const titleEl = header.querySelector('[data-testid="jobsearch-JobInfoHeader-title"]')
+					|| header.querySelector('h1')
+					|| header.querySelector('h2');
+				const companyEl = header.querySelector('[data-testid="inlineHeader-companyName"]')
+					|| header.querySelector('[data-testid="jobsearch-JobInfoHeader-companyName"]');
 
-				setTimeout(() => {
-					btn.innerHTML = '📋 Copier l\'offre';
-					btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-				}, 2000);
+				if (titleEl) position = titleEl.innerText.trim();
+				if (companyEl) company = companyEl.innerText.trim();
 			}
+
+			const payload = {
+				job_offer: description.innerText.trim(),
+				company: company,
+				position: position,
+				url: window.location.href
+			};
+			// Copie dans le presse-papier
+			navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+
+			// Envoi au webhook local
+			fetch('http://localhost:8000/webhook', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			}).catch(err => console.error('[CV Agent] Webhook error:', err));
+
+			btn.innerHTML = '✓ Copié !';
+			btn.style.background = '#28a745';
+			setTimeout(() => {
+				btn.innerHTML = '📋 Copier l\'offre';
+				btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+			}, 2000);
 		});
 
 		document.body.appendChild(btn);
