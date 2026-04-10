@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NAME — CV</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+	<style>
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		:root {
+			--ink: #1a1a18;
+			--ink-mid: #3d3d3a;
+			--ink-muted: #7a7a74;
+			--accent: #1a3a2a;
+			--accent-light: #e8f0eb;
+			--rule: #d0d0c8;
+			--page: #fafaf8;
+			--col-left: 220px;
+			--gap: 32px;
+		}
+
+		html {
+			font-size: 14px;
+		}
+
+		body {
+			font-family: 'DM Sans', sans-serif;
+			background: #e8e8e2;
+			color: var(--ink);
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+
+		.page {
+			width: 210mm;
+			min-height: 297mm;
+			margin: 24px auto;
+			background: var(--page);
+			padding: 14mm 14mm 14mm 14mm;
+			position: relative;
+		}
+
+		/* ── HEADER ─────────────────────────────── */
+		.header {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			align-items: end;
+			gap: 24px;
+			padding-bottom: 18px;
+			border-bottom: 2px solid var(--ink);
+			margin-bottom: 24px;
+		}
+
+		.header-name {
+			font-family: 'DM Serif Display', serif;
+			font-size: 2.6rem;
+			line-height: 1;
+			letter-spacing: -0.02em;
+			color: var(--ink);
+		}
+
+		.header-title {
+			font-size: 0.85rem;
+			font-weight: 300;
+			color: var(--ink-mid);
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			margin-top: 6px;
+		}
+
+		.header-contact {
+			text-align: right;
+			font-size: 0.78rem;
+			color: var(--ink-mid);
+			line-height: 1.9;
+		}
+
+		.header-contact a {
+			color: var(--ink-mid);
+			text-decoration: none;
+		}
+
+		/* ── BODY LAYOUT ─────────────────────────── */
+		.body {
+			display: grid;
+			grid-template-columns: var(--col-left) 1fr;
+			gap: 0 var(--gap);
+		}
+
+		/* ── LEFT COLUMN ─────────────────────────── */
+		.col-left {}
+
+		.sidebar-section {
+			margin-bottom: 22px;
+		}
+
+		.sidebar-label {
+			font-size: 0.65rem;
+			font-weight: 500;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: var(--ink-muted);
+			margin-bottom: 10px;
+			padding-bottom: 5px;
+			border-bottom: 0.5px solid var(--rule);
+		}
+
+		/* Skills */
+		.skill-group {
+			margin-bottom: 12px;
+		}
+
+		.skill-group-title {
+			font-size: 0.72rem;
+			font-weight: 500;
+			color: var(--ink-mid);
+			margin-bottom: 5px;
+		}
+
+		.skill-tags {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 4px;
+		}
+
+		.tag {
+			display: inline-block;
+			font-size: 0.68rem;
+			background: var(--accent-light);
+			color: var(--accent);
+			padding: 2px 7px;
+			border-radius: 2px;
+			font-weight: 400;
+		}
+
+		/* Languages */
+		.lang-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			font-size: 0.75rem;
+			margin-bottom: 5px;
+			color: var(--ink-mid);
+		}
+
+		.lang-name {
+			font-weight: 500;
+			color: var(--ink);
+		}
+
+		.lang-level {
+			font-size: 0.68rem;
+			color: var(--ink-muted);
+		}
+
+		/* Soft skills / interests */
+		.text-list {
+			list-style: none;
+			font-size: 0.75rem;
+			color: var(--ink-mid);
+			line-height: 1.8;
+		}
+
+		.text-list li::before {
+			content: '—';
+			margin-right: 5px;
+			color: var(--rule);
+		}
+
+		/* ── RIGHT COLUMN ─────────────────────────── */
+		.col-right {}
+
+		/* Summary */
+		.summary {
+			font-size: 0.82rem;
+			line-height: 1.7;
+			color: var(--ink-mid);
+			margin-bottom: 22px;
+			padding-left: 12px;
+			border-left: 2px solid var(--accent);
+			font-weight: 300;
+		}
+
+		/* Section */
+		.section {
+			margin-bottom: 20px;
+		}
+
+		.section-title {
+			font-size: 0.65rem;
+			font-weight: 500;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: var(--ink-muted);
+			margin-bottom: 12px;
+			padding-bottom: 5px;
+			border-bottom: 0.5px solid var(--rule);
+		}
+
+		/* Experience entry */
+		.entry {
+			display: grid;
+			grid-template-columns: 100px 1fr;
+			gap: 0 14px;
+			margin-bottom: 16px;
+		}
+
+		.entry:last-child {
+			margin-bottom: 0;
+		}
+
+		.entry-meta {
+			padding-top: 1px;
+		}
+
+		.entry-period {
+			font-size: 0.68rem;
+			color: var(--ink-muted);
+			line-height: 1.5;
+			font-style: italic;
+		}
+
+		.entry-company {
+			font-size: 0.7rem;
+			font-weight: 500;
+			color: var(--accent);
+			margin-top: 3px;
+		}
+
+		.entry-location {
+			font-size: 0.65rem;
+			color: var(--ink-muted);
+			margin-top: 1px;
+		}
+
+		.entry-body {}
+
+		.entry-title {
+			font-family: 'DM Serif Display', serif;
+			font-size: 0.95rem;
+			color: var(--ink);
+			margin-bottom: 5px;
+			line-height: 1.2;
+		}
+
+		.entry-bullets {
+			list-style: none;
+			font-size: 0.75rem;
+			color: var(--ink-mid);
+			line-height: 1.65;
+		}
+
+		.entry-bullets li {
+			display: flex;
+			gap: 6px;
+			margin-bottom: 2px;
+		}
+
+		.entry-bullets li::before {
+			content: '·';
+			color: var(--accent);
+			font-size: 1rem;
+			line-height: 1.4;
+			flex-shrink: 0;
+		}
+
+		/* Education — compact */
+		.edu-entry {
+			display: grid;
+			grid-template-columns: 100px 1fr;
+			gap: 0 14px;
+			margin-bottom: 10px;
+			font-size: 0.75rem;
+		}
+
+		.edu-period {
+			color: var(--ink-muted);
+			font-style: italic;
+			font-size: 0.68rem;
+			padding-top: 1px;
+		}
+
+		.edu-degree {
+			font-weight: 500;
+			color: var(--ink);
+			margin-bottom: 1px;
+		}
+
+		.edu-school {
+			color: var(--ink-muted);
+			font-size: 0.7rem;
+		}
+
+		.tag.highlighted {
+			background: #1a3a2a;
+			color: #e8f0eb;
+			font-weight: 500;
+		}
+
+		.tag.injected {
+			background: #2d5a3d;
+			color: #c8e6d0;
+			border: 1px dashed #5a9a6a;
+		}
+
+		.entry-bullets li.highlighted {
+			color: var(--ink);
+			font-weight: 500;
+		}
+
+		.entry-bullets li.highlighted::before {
+			color: #2d7a4a;
+			font-weight: 700;
+		}
+
+		/* ── PRINT ───────────────────────────────── */
+		@media print {
+			body {
+				background: white;
+			}
+
+			.page {
+				margin: 0;
+				box-shadow: none;
+				width: 210mm;
+				min-height: 297mm;
+			}
+		}
+
+		@page {
+			size: A4;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="page">
+
+		<!-- HEADER -->
+		<header class="header">
+			<div>
+				<div class="header-name">YOUR NAME</div>
+				<div class="header-title" id="cv-header-title">JOB TITLE</div>
+			</div>
+			<div class="header-contact">
+				<div>your@email.com</div>
+				<div>+1 01 01 01 01</div>
+				<div><a href="https://youwebsite.com">yourwebsite</a></div>
+				<div>Remote · Place · Mobility</div>
+			</div>
+		</header>
+
+		<div class="body">
+			<!-- ── LEFT COLUMN ── -->
+			<aside class="col-left">
+				<div class="sidebar-section">
+					<div class="sidebar-label">Skills</div>
+					<div class="skill-group" id="skills-langages">
+						<div class="skill-group-title">Langages & Frameworks</div>
+						<div class="skill-tags" id="tags-langages">
+							<span class="tag" data-skill="python">Python</span>
+							<span class="tag" data-skill="django">Django</span>
+							<span class="tag" data-skill="php">PHP</span>
+							<span class="tag" data-skill="laravel">Laravel</span>
+							<span class="tag" data-skill="rust">Rust</span>
+							<span class="tag" data-skill="nodejs">Node.js</span>
+							<span class="tag" data-skill="react">React</span>
+							<span class="tag" data-skill="nextjs">Next.js</span>
+							<span class="tag" data-skill="vuejs">Vue.js</span>
+							<span class="tag" data-skill="typescript">TypeScript</span>
+							<span class="tag" data-skill="html">HTML</span>
+							<span class="tag" data-skill="css">CSS</span>
+							<span class="tag" data-skill="javascript">JavaScript</span>
+							<span class="tag" data-skill="flutter">Flutter</span>
+							<span class="tag" data-skill="flutterflow">FlutterFlow</span>
+						</div>
+					</div>
+
+					<div class="skill-group" id="skills-backend">
+						<div class="skill-group-title">Backend & API</div>
+						<div class="skill-tags" id="tags-backend">
+							<span class="tag" data-skill="api-rest">API REST</span>
+							<span class="tag" data-skill="api-graphql">API GraphQL</span>
+							<span class="tag" data-skill="sql">SQL</span>
+							<span class="tag" data-skill="nosql">NoSQL</span>
+							<span class="tag" data-skill="webhooks">Webhooks</span>
+						</div>
+					</div>
+
+					<div class="skill-group" id="skills-architecture">
+						<div class="skill-group-title">Architecture</div>
+						<div class="skill-tags" id="tags-architecture">
+							<span class="tag" data-skill="kafka">Kafka</span>
+							<span class="tag" data-skill="rabbitmq">RabbitMQ</span>
+							<span class="tag" data-skill="microservices">Microservices</span>
+						</div>
+					</div>
+
+					<div class="skill-group" id="skills-devops">
+						<div class="skill-group-title">DevOps & Cloud</div>
+						<div class="skill-tags" id="tags-devops">
+							<span class="tag" data-skill="docker">Docker</span>
+							<span class="tag" data-skill="kubernetes">Kubernetes</span>
+							<span class="tag" data-skill="terraform">Terraform</span>
+							<span class="tag" data-skill="ansible">Ansible</span>
+							<span class="tag" data-skill="aws">AWS</span>
+							<span class="tag" data-skill="vps">VPS</span>
+							<span class="tag" data-skill="cicd">CI/CD</span>
+							<span class="tag" data-skill="jenkins">Jenkins</span>
+							<span class="tag" data-skill="github-actions">GitHub Actions</span>
+							<span class="tag" data-skill="gitlab-ci">GitLab CI</span>
+						</div>
+					</div>
+
+					<div class="skill-group" id="skills-monitoring">
+						<div class="skill-group-title">Monitoring & Observability</div>
+						<div class="skill-tags" id="tags-monitoring">
+							<span class="tag" data-skill="prometheus">Prometheus</span>
+							<span class="tag" data-skill="grafana">Grafana</span>
+							<span class="tag" data-skill="elk">ELK Stack</span>
+						</div>
+					</div>
+
+					<div class="skill-group" id="skills-securite">
+						<div class="skill-group-title">Security & DevSecOps</div>
+						<div class="skill-tags" id="tags-securite">
+							<span class="tag" data-skill="dast-sast">DAST/SAST</span>
+							<span class="tag" data-skill="owasp">OWASP Top 10</span>
+							<span class="tag" data-skill="vuln-mgmt">Vulnerability Management</span>
+							<span class="tag" data-skill="hardening">Hardening</span>
+							<span class="tag" data-skill="ids-ips">IDS/IPS</span>
+							<span class="tag" data-skill="rgpd">RGPD</span>
+							<span class="tag" data-skill="iso27001">Notions ISO 27001</span>
+						</div>
+					</div>
+
+					<div class="skill-group" id="skills-outils">
+						<div class="skill-group-title">Tools</div>
+						<div class="skill-tags" id="tags-outils">
+							<span class="tag" data-skill="git">Git</span>
+							<span class="tag" data-skill="jest">Jest</span>
+							<span class="tag" data-skill="pytest">Pytest</span>
+							<span class="tag" data-skill="n8n">n8n</span>
+						</div>
+					</div>
+
+					<div class="skill-group" id="skills-systemes">
+						<div class="skill-group-title">Systems & Network</div>
+						<div class="skill-tags" id="tags-systemes">
+							<span class="tag" data-skill="linux">Linux</span>
+							<span class="tag" data-skill="reseau">Network</span>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="sidebar-section">
+					<div class="sidebar-label">Languages</div>
+					<div class="lang-item"><span class="lang-name">French</span><span class="lang-level">Native</span></div>
+					<div class="lang-item"><span class="lang-name">English</span><span class="lang-level">Professional</span></div>
+					<div class="lang-item"><span class="lang-name">Arabic</span><span class="lang-level">Good Grasp</span></div>
+					<div class="lang-item"><span class="lang-name">Spanish</span><span class="lang-level">School Level</span></div>
+				</div>
+
+				<div class="sidebar-section">
+					<div class="sidebar-label">Soft Skills</div>
+					<ul class="text-list">
+						<li>Autonomous</li>
+						<li>Proactive</li>
+						<li>Self-taught</li>
+					</ul>
+				</div>
+
+				<div class="sidebar-section">
+					<div class="sidebar-label">Interests & Hobies</div>
+					<ul class="text-list">
+						<li>Basket-Ball</li>
+						<li>Volley-Ball</li>
+						<li>Escape Games</li>
+						<li>Videos Games</li>
+					</ul>
+				</div>
+
+			</aside>
+
+			<!-- ── RIGHT COLUMN ── -->
+			<main class="col-right">
+
+				<p class="summary" id="cv-summary">
+					Développeur Full-Stack avec 5 ans d'expérience sur des projets FullStack, DevSecOps et cybersécurité. Habitué aux environnements variés, au delivery rapide et
+					aux infrastructures sécurisées. Disponible immédiatement.
+				</p>
+
+				<section class="section">
+					<div class="section-title">Professional Experiences</div>
+
+					<div class="entry" id="exp-mycompany" data-company="mycompany">
+						<div class="entry-meta">
+							<div class="entry-period">Depuis<br>janv. 2021</div>
+							<div class="entry-company">mycompany</div>
+						</div>
+						<div class="entry-body">
+							<div class="entry-title" id="exp-mycompany-title">Ingénieur Full-Stack</div>
+							<ul class="entry-bullets" id="exp-mycompany-bullets">
+								<li data-keywords="saas,nextjs,django,api,roles,dataviz">Développement de SaaS avec Next.js et Django — intégration d'API, gestion des rôles, data
+									viz</li>
+								<li data-keywords="flutter,mobile,uiux,state-management,deployment">Applications mobiles Flutter (architecture, UI/UX, state management,
+									déploiement)</li>
+								<li data-keywords="n8n,webhooks,automation,integrations">Automatisation de workflows avec n8n (webhooks, intégrations multi-services)</li>
+								<li data-keywords="cicd,jenkins,vps,cloud,securite">Pipelines CI/CD Jenkins, déploiement VPS/Cloud, sécurisation des environnements</li>
+								<li data-keywords="grafana,prometheus,terraform,kubernetes,iac,monitoring">Monitoring Grafana + Prometheus, IaC Terraform, orchestration Kubernetes
+								</li>
+								<li data-keywords="bots,discord,reseaux-sociaux,gaming">Développement de bots (Discord, réseaux sociaux, jeux vidéo)</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="entry" id="exp-company1" data-company="company1">
+						<div class="entry-meta">
+							<div class="entry-period">03/2024 –<br>11/2025</div>
+							<div class="entry-company">company1</div>
+						</div>
+						<div class="entry-body">
+							<div class="entry-title" id="exp-company1-title">Alternant · Full-Stack &amp; DevOps</div>
+							<ul class="entry-bullets" id="exp-company1-bullets">
+								<li data-keywords="laravel,vuejs,fullstack,backend,frontend">Full-Stack Laravel (backend) + Vue.js (frontend)</li>
+								<li data-keywords="django,microservices,api,data-collection,multisource">Microservice Django — collecte de données publiques, APIs, intégration
+									multisource</li>
+								<li data-keywords="dast,sast,vuln-mgmt,rgpd,devsecops,securite">DevSecOps — gestion des vulnérabilités, DAST/SAST, conformité RGPD</li>
+								<li data-keywords="docker,kubernetes,prometheus,grafana,n8n,monitoring">Docker, Kubernetes, Prometheus + Grafana, pipelines n8n</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="entry" id="exp-company2" data-company="company2">
+						<div class="entry-meta">
+							<div class="entry-period">10/2023 –<br>01/2024</div>
+							<div class="entry-company">company2</div>
+							<div class="entry-location">Marseille</div>
+						</div>
+						<div class="entry-body">
+							<div class="entry-title" id="exp-company2-title">Stagiaire · Développeur Mobile</div>
+							<ul class="entry-bullets" id="exp-company2-bullets">
+								<li data-keywords="flutter,supabase,agile,uiux,mobile">Applications Flutter — UI/UX, intégration Supabase, méthode Agile</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="entry" id="exp-company3" data-company="company3">
+						<div class="entry-meta">
+							<div class="entry-period">03/2022 –<br>10/2023</div>
+							<div class="entry-company">company3</div>
+							<div class="entry-location">Toulouse</div>
+						</div>
+						<div class="entry-body">
+							<div class="entry-title" id="exp-company3-title">Alternant · Développeur Web</div>
+							<ul class="entry-bullets" id="exp-company3-bullets">
+								<li data-keywords="django,api,auth,bdd,mailing,securite">Architecture Django — APIs, auth, BDD, mass mailing, sécurité</li>
+								<li data-keywords="docker,devops,monitoring,maintenance,deployment">DevOps Docker, déploiement, monitoring, maintenance</li>
+								<li data-keywords="frontend,responsive,a11y,seo,maquettes">Frontend — maquettes dynamiques, responsive, a11y, SEO</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="entry" id="exp-company4" data-company="company4">
+						<div class="entry-meta">
+							<div class="entry-period">05/2020 –<br>07/2021</div>
+							<div class="entry-company">company4</div>
+							<div class="entry-location">Perpignan</div>
+						</div>
+						<div class="entry-body">
+							<div class="entry-title" id="exp-company4-title">Stagiaire · Développeur WordPress</div>
+							<ul class="entry-bullets" id="exp-company4-bullets">
+								<li data-keywords="wordpress,mysql,seo,sea,photoshop,illustrator,graphisme">Sites WordPress, BDD MySQL, SEO/SEA, charte graphique (Photoshop,
+									Illustrator)</li>
+								<li data-keywords="php,plugin,wordpress,custom">Développement d'un plugin PHP sur mesure</li>
+							</ul>
+						</div>
+					</div>
+
+				</section>
+
+				<section class="section">
+					<div class="section-title">Diploma & School</div>
+
+					<div class="edu-entry">
+						<div class="edu-period">En cours depuis <br> nov. 2025</div>
+						<div>
+							<div class="edu-degree">Diploma School 1</div>
+							<div class="edu-school">School 1 - City</div>
+						</div>
+					</div>
+
+					<div class="edu-entry">
+						<div class="edu-period">2024 – 2025</div>
+						<div>
+							<div class="edu-degree">Degree School 2</div>
+							<div class="edu-school">School 2 - City</div>
+						</div>
+					</div>
+
+					<div class="edu-entry">
+						<div class="edu-period">2022 – 2023</div>
+						<div>
+							<div class="edu-degree">Degree School 3</div>
+							<div class="edu-school">School 3 — City</div>
+						</div>
+					</div>
+
+					<div class="edu-entry">
+						<div class="edu-period">2019 – 2021</div>
+						<div>
+							<div class="edu-degree">Degree School 4</div>
+							<div class="edu-school">School 4 — City</div>
+						</div>
+					</div>
+
+				</section>
+
+			</main>
+		</div>
+	</div>
+
+	<script>
+		window.CV_SKILLS_POOL = {
+			displayed: [
+				"python", "django", "php", "laravel", "rust", "nodejs", "react", "nextjs",
+				"vuejs", "typescript", "html", "css", "javascript", "flutter", "flutterflow",
+				"api-rest", "api-graphql", "sql", "nosql", "webhooks",
+				"kafka", "rabbitmq", "microservices",
+				"docker", "kubernetes", "terraform", "ansible", "aws", "vps", "cicd",
+				"jenkins", "github-actions", "gitlab-ci",
+				"prometheus", "grafana", "elk",
+				"dast-sast", "owasp", "vuln-mgmt", "hardening", "ids-ips", "rgpd", "iso27001",
+				"git", "jest", "pytest", "n8n",
+				"linux", "reseau"
+			],
+			hidden: [
+				"redux", "react-router", "react-query", "zustand", "tailwind", "scss",
+				"fastapi", "celery", "sqlalchemy", "alembic",
+				"supabase", "firebase", "postgresql", "mysql", "mongodb", "redis",
+				"nginx", "traefik", "caddy",
+				"sonarqube", "trivy", "snyk", "dependabot",
+				"playwright", "cypress", "selenium",
+				"figma", "photoshop", "illustrator",
+				"agile", "scrum", "jira", "notion",
+				"discord-bot", "tiktok-api", "instagram-api"
+			],
+			labels: {
+				"redux": "Redux", "react-router": "React Router", "react-query": "React Query",
+				"zustand": "Zustand", "tailwind": "Tailwind CSS", "scss": "SCSS",
+				"fastapi": "FastAPI", "celery": "Celery", "sqlalchemy": "SQLAlchemy",
+				"alembic": "Alembic", "supabase": "Supabase", "firebase": "Firebase",
+				"postgresql": "PostgreSQL", "mysql": "MySQL", "mongodb": "MongoDB",
+				"redis": "Redis", "nginx": "Nginx", "traefik": "Traefik", "caddy": "Caddy",
+				"sonarqube": "SonarQube", "trivy": "Trivy", "snyk": "Snyk",
+				"dependabot": "Dependabot", "playwright": "Playwright", "cypress": "Cypress",
+				"selenium": "Selenium", "figma": "Figma", "photoshop": "Photoshop",
+				"jira": "Jira", "notion": "Notion", "discord-bot": "Discord Bot",
+				"illustrator": "Illustrator", "agile": "Agile", "scrum": "Scrum",
+				"tiktok-api": "TikTok API", "instagram-api": "Instagram API"
+			}
+		};
+	</script>
+
+</body>
+
+</html>

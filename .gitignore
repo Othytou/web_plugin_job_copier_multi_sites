@@ -20,3 +20,5 @@ Desktop.ini
 # Temporary files
 *.log
 *.tmp
+
+template/template_cv_2.html
