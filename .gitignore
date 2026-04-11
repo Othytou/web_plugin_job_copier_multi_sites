@@ -22,3 +22,5 @@ Desktop.ini
 *.tmp
 
 template/template_cv_2.html
+
+.env
