@@ -43,7 +43,7 @@ function detectCurrentSite() {
 // Récupère le sélecteur pour le site actuel
 function getCurrentSelectors() {
 	const siteName = detectCurrentSite();
-	return siteName ? siteSelectors[siteName] : null;
+	return siteName ? config.siteSelectors[siteName] : null;
 }
 
 
@@ -120,7 +120,7 @@ function addCopyButton() {
 			navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
 
 			// Envoi au webhook local
-			fetch('http://localhost:8000/webhook', {
+			fetch('http://localhost:9000/webhook', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload)

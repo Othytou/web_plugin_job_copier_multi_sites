@@ -83,7 +83,7 @@ function copyJobContent() {
 		showCopyNotification(siteName);
 	});
 
-	fetch('http://localhost:8000/webhook', {
+	fetch('http://localhost:9000/webhook', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload)
