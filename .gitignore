@@ -20,7 +20,13 @@ Desktop.ini
 # Temporary files
 *.log
 *.tmp
+__pycache__/
+*.py[cod]
 
-template/template_cv_2.html
-
+# env
 .env
+
+# HTML & PDF
+/template/template_cv_2.html
+output/*.html
+pdf/*.pdf

@@ -1,0 +1,44 @@
+import re
+import unicodedata
+import logging
+
+# ── Logger ────────────────────────────────────────────────────────────────────
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [CV Agent] %(levelname)s — %(message)s",
+    datefmt="%H:%M:%S"
+)
+logger = logging.getLogger("cv_agent")
+
+
+# ── Slugify ───────────────────────────────────────────────────────────────────
+
+def slugify(value: str, max_length: int = 40) -> str:
+    """
+    Convertit une chaîne en slug URL-safe.
+    ex: "La Poste" → "la-poste"
+    ex: "Développeur Python & Django" → "developpeur-python-django"
+    """
+    value = str(value)
+    # Normalise les accents
+    value = unicodedata.normalize("NFKD", value)
+    value = value.encode("ascii", "ignore").decode("ascii")
+    # Minuscules
+    value = value.lower()
+    # Remplace tout ce qui n'est pas alphanumérique par un tiret
+    value = re.sub(r"[^a-z0-9]+", "-", value)
+    # Supprime les tirets en début/fin
+    value = value.strip("-")
+    # Tronque
+    return value[:max_length]
+
+
+def build_output_filename(company: str, position: str) -> str:
+    """
+    Construit le nom du fichier HTML de sortie.
+    ex: cv_la-poste_developpeur-python.html
+    """
+    company_slug = slugify(company)
+    position_slug = slugify(position)
+    return f"cv_{company_slug}_{position_slug}.html"
