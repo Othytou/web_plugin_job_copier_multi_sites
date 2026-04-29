@@ -15,6 +15,19 @@ chrome.commands.onCommand.addListener((command) => {
 	}
 });
 
+chrome.runtime.onMessage.addListener((message) => {
+	if (message.type === "SEND_WEBHOOK") {
+		fetch("http://localhost:9000/webhook", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(message.payload)
+		})
+			.then(res => res.json())
+			.then(data => console.log("[CV Agent] Webhook OK", data))
+			.catch(err => console.error("[CV Agent] Webhook error", err));
+	}
+});
+
 // Fonction injectée dans la page pour copier le contenu
 function copyJobContent() {
 	// Configuration des sélecteurs par site
@@ -68,7 +81,7 @@ function copyJobContent() {
 		const companyEl = header.querySelector('[data-testid="inlineHeader-companyName"]')
 			|| header.querySelector('[data-testid="jobsearch-JobInfoHeader-companyName"]');
 
-		if (titleEl) position = titleEl.innerText.trim();
+		if (titleEl) position = titleEl.innerText.trim().replace(/\s*-\s*job post$/i, '').trim();;
 		if (companyEl) company = companyEl.innerText.trim();
 	}
 
@@ -82,13 +95,6 @@ function copyJobContent() {
 	navigator.clipboard.writeText(JSON.stringify(payload, null, 2)).then(() => {
 		showCopyNotification(siteName);
 	});
-
-	fetch('http://localhost:9000/webhook', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(payload)
-	}).catch(err => console.error('[CV Agent] Webhook error:', err));
-
 
 	// Affiche une notification temporaire
 	function showCopyNotification(site) {

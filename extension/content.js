@@ -106,7 +106,7 @@ function addCopyButton() {
 				const companyEl = header.querySelector('[data-testid="inlineHeader-companyName"]')
 					|| header.querySelector('[data-testid="jobsearch-JobInfoHeader-companyName"]');
 
-				if (titleEl) position = titleEl.innerText.trim();
+				if (titleEl) position = titleEl.innerText.trim().replace(/\s*-\s*job post$/i, '').trim();
 				if (companyEl) company = companyEl.innerText.trim();
 			}
 
@@ -120,11 +120,10 @@ function addCopyButton() {
 			navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
 
 			// Envoi au webhook local
-			fetch('http://localhost:9000/webhook', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload)
-			}).catch(err => console.error('[CV Agent] Webhook error:', err));
+			chrome.runtime.sendMessage({
+				type: "SEND_WEBHOOK",
+				payload: payload
+			});
 
 			btn.innerHTML = '✓ Copié !';
 			btn.style.background = '#28a745';
