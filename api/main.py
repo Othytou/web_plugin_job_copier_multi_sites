@@ -103,10 +103,9 @@ async def handle_webhook(payload: WebhookPayload, db: AsyncSession = Depends(get
     await db.commit()
     await db.refresh(application)
 
-    # 6. Génération PDF — décommenter quand Playwright activé
-    # pdf_path = await generate_pdf(output_path, PDF_DIR, filename)
-    # application.pdf_path = pdf_path
-    # await db.commit()
+    pdf_path = await generate_pdf(output_path, PDF_DIR, filename)
+    application.pdf_path = pdf_path
+    await db.commit()
 
     logger.info(f"Application #{application.id} créée — {filename}")
 
